@@ -1,4 +1,4 @@
-#import "hw/lib.typ": assignment
+#import "lib.typ": assignment
 #import "@preview/commute:0.3.0": arr, commutative-diagram, node
 
 #show: assignment.with(

@@ -12,9 +12,9 @@ def tz(d,q1,q2,q3):
 
 n = 50
 D = np.linspace(20, 80, n) 
-Q1 = np.linspace(-np.pi,  np.pi, n) 
+Q1 = np.linspace(-np.pi,  np.pi, n)
 Q2 = np.linspace(0, np.pi / 2 , n)
-Q3 = np.linspace(-np.pi,  np.pi, n) 
+Q3 = np.linspace(-np.pi,  np.pi, n)
 
 X = np.arange(-100, 100)
 Y = np.arange(-100, 100)
