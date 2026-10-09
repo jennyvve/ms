@@ -1,4 +1,4 @@
-#import "lib.typ": assignment
+#import "hw/lib.typ": assignment
 
 #show: assignment.with(
   title: "Homework 1",
