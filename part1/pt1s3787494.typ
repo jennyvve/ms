@@ -128,18 +128,18 @@ $
 Concluding that $x +_s y in accent("Sub"_a, -)(f)$, making $accent("Sub"_a, -)(f)$ a convex set.
 
 = Problem I.9
-Let $x,y in X$ be the minima for $f: X -> RR$ and $X subset.eq V$. This implies that $f(x +_s y) <= f(x) = f(y)$. Strong convex functions are defined as, with $a>0$ and $a in RR$ and $forall s in [0,1]$:
+Let $x,y in X$ be the minima for $f: X -> RR$ and $X subset.eq V$. This implies that $f(x +_s y) <= f(x) = f(y)$. Following the definition of strong convex functions, with $a>0$ and $a in RR$ and $forall s in [0,1]$:
 
 $
-  f(x +_s y) & <= (f(x) +_s f(y)) - a s (s-1)norm(x - y)^2
+  f(x +_s y) & <= (f(x) +_s f(y)) - a s (1 - s)norm(x - y)^2
 $
 
 We substitude and simplify and get the following result:
 
 $
-  & f(x) <= f(x) - a s (s-1)norm(x - y)^2 \
-  & => a s (s - 1) norm(x - y)^2 <= 0 \
-  & => norm(x - y)^2 <= 0 => x = y        & (a > 0 "and" exists s > 0)
+  f(x) & <= f(x) - a s (1 - s)norm(x - y)^2 \
+       & => a s (1 - s) norm(x - y)^2 <= 0 \
+       & => norm(x - y)^2 <= 0 => x = y     & (a > 0 "and" 0 < exists s < 1)
 $
 
 Showing that the minima for a strong convex function is unique.
