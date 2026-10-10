@@ -131,16 +131,54 @@ Concluding that $x +_s y in accent("Sub"_a, -)(f)$, making $accent("Sub"_a, -)(f
 Let $x,y in X$ be the minima for $f: X -> RR$ and $X subset.eq V$. This implies that $f(x +_s y) <= f(x) = f(y)$. Following the definition of strong convex functions, with $a>0$ and $a in RR$ and $forall s in [0,1]$:
 
 $
-  f(x +_s y) & <= (f(x) +_s f(y)) - a s (1 - s)norm(x - y)^2
-$
-
-We substitude and simplify and get the following result:
-
-$
-  f(x) & <= f(x) - a s (1 - s)norm(x - y)^2 \
-       & => a s (1 - s) norm(x - y)^2 <= 0 \
-       & => norm(x - y)^2 <= 0 => x = y     & (a > 0 "and" 0 < exists s < 1)
+  f(x +_s y) & <= (f(x) +_s f(y)) - a s (1 - s)norm(x - y)^2 \
+        f(x) & <= f(x) - a s (1 - s)norm(x - y)^2 \
+             & => a s (1 - s) norm(x - y)^2 <= 0 \
+             & => norm(x - y)^2 <= 0 => x = y                & (a > 0 "and" 0 < exists s < 1)
 $
 
 Showing that the minima for a strong convex function is unique.
 
+= Problem 10
+a) Let $f: RR^2 -> RR$ and $f(x_1,x_2) = x_1^2 + x_2^2$.
+
+The convex combination simplifies to:
+$
+  f(x +_s y) & = (s x_1 + (1 - s) y_1)^2 + (s x_2 + (1-s) y_2) \
+             & = 2 s (1 - s) x_1 y_1 + s^2 x_1^2 + (1-s)^2 y^2_1 + \
+             & wide 2 s (1 - s) x_2 y_2 + s^2 x_2^2 + (1-s)^2 y^2_2 \
+             & = s^2 f(x) + (1-s)^2 f(y) + 2s(1-s)(x_1 y_1 + x_2 y_2) \
+             & = s^2 f(x) + (1-s)^2 f(y) + 2s(1-s)(x_1 y_1 + x_2 y_2) \
+$
+
+Strong convexity proof follows using the definition:
+
+$
+  f(x +_s y) & <= (f(x) +_s f(y)) - a s (1 - s)norm(x - y)^2 \
+             & => s^2 f(x) + (1-s)^2 f(y) + 2s(1-s)(x_1 y_1 + x_2 y_2) \
+             & wide <= s f(x) + (1-s)f(y) - a s (1 - s)norm(x - y)^2 \
+             & => 2s(1-s)(x_1 y_1 + x_2 y_2) \
+             & wide <= s f(x) - s^2 f(x) + (1-s)f(y) - (1-s)^2 f(y) - a s (1 - s)norm(x - y)^2 \
+             & => 2s(1-s)(x_1 y_1 + x_2 y_2) \
+             & wide <= s f(x) (1 - s) + (1-s)f(y)s - a s (1 - s)norm(x - y)^2 \
+             & => 2(x_1 y_1 + x_2 y_2) \
+             & wide <= f(x) + f(y) - a norm(x - y)^2 \
+             & => 2(x_1 y_1 + x_2 y_2) \
+             & wide <= x_1^2 + x_2^2 + y_1^2 + y_2^2 - a (x_1^2 + y_1^2 -2 x_1 y_1 +x_2^2 + y_2^2 -2 x_2 y_2) \
+             & => 2(x_1 y_1 + x_2 y_2) \
+             & wide <= x_1^2 + x_2^2 + y_1^2 + y_2^2 - 1 (x_1^2 + y_1^2 -2 x_1 y_1 +x_2^2 + y_2^2 -2 x_2 y_2) \
+             & => 2(x_1 y_1 + x_2 y_2) \
+             & wide <= 2 (x_1 y_1 + x_2 y_2) \
+$
+Thereby $f$ is strong convex.
+
+b) The graph of $g$ is shown in the figure below. This function is not convex because the line drawn by the convex combination between the minima is not inside or above the graph of $g$.
+
+c) If we where to take the open closed half space $accent(H, -)^2_1$ of the image then $g$ would be convex, i.e $g : RR^2_(>=0) -> RR$,
+
+
+
+#figure(
+  image("geogebra-export.png", width: 50%),
+  caption: [A curious figure.],
+)
