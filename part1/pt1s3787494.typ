@@ -4,7 +4,7 @@
 #let innerproduct(x, y) = $lr(chevron.l #x, #y chevron.r)$
 
 #show: assignment.with(
-  title: "Project: Part 1",
+  title: "Optimisation on Analog Computers: Part 1",
   authors: (
     (
       name: "Jenny Vermeltfoort",
@@ -12,9 +12,11 @@
       student-no: "s3787494",
     ),
   ),
-  course: "2627-S1 Mathmetical Structures for Computer Science",
+  course: "2627-S1 Mathmetical Structures in Computer Science",
   university-logo: image("./logo.svg"),
 )
+
+Repository: #link("https://github.com/jennyvve/ms"), accessible using read-only token: "github_pat_11ATZJOHA0IdnnBz6t4FVo_c0qR3VNvxEUD5fWBKJ11 \ uksegrYTq7zMdVZImVIZKbdE5WW6U33ynf4L8nW"
 
 #set enum(numbering: "1. ")
 
@@ -39,7 +41,7 @@ Which shows that $delta(v)(w) = phi(w)$.
 
 Since $delta$ is both injective and surjective, it is a bijection. We conclude that $delta$ is isomorphic.
 
-#pagebreak()
+
 
 b. We simplified $delta(v)(w) = sum^n_(i=1) v_i w_i$.
 
@@ -278,7 +280,7 @@ TODO.
 
 
 = Problem I.13
-
+TODO
 
 
 

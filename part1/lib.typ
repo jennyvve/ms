@@ -7,7 +7,7 @@
 ) = {
   set page(
     paper: "a4",
-    margin: (top: 3cm, right: 2in, bottom: 3cm, left: 2in),
+    margin: (top: 3cm, right: 4cm, bottom: 3cm, left: 4cm),
     header: context {
       if counter(page).get().first() > 1 [
         #title
@@ -39,7 +39,7 @@
       )
       emph(course)
       v(-0.4em)
-      strong(text(2em, title))
+      strong(text(1.5em, title))
       linebreak()
       v(0.5em)
 
