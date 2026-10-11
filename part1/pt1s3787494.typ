@@ -66,6 +66,8 @@ $(a f)(x) = a f(x)$ defined by the exersice. The limit shows that $a D f$ is the
 $D(f + g) &= lim_(x->0) norm((f+g)(x + v) - (f+g)(x) - D (f+g)(x)(v))/norm(v) \
 &=$
 
+TODO
+
 = Problem I.3
 
 With $x in RR^n$ and $f(x) = norm(x)_2^2 = x_1^2 + ... + x_n^2$ the gradient is:
@@ -132,14 +134,15 @@ Let $x,y in X$ be the minima for $f: X -> RR$ and $X subset.eq V$. This implies 
 
 $
   f(x +_s y) & <= (f(x) +_s f(y)) - a s (1 - s)norm(x - y)^2 \
+        f(x) & <= s f(x) + f(x) - s f(x) - a s (1 - s)norm(x - y)^2 \
         f(x) & <= f(x) - a s (1 - s)norm(x - y)^2 \
              & => a s (1 - s) norm(x - y)^2 <= 0 \
-             & => norm(x - y)^2 <= 0 => x = y                & (a > 0 "and" 0 < exists s < 1)
+             & => norm(x - y)^2 <= 0 => x = y                       & (a > 0 "and" 0 < exists s < 1)
 $
 
 Showing that the minima for a strong convex function is unique.
 
-= Problem 10
+= Problem I.10
 a) Let $f: RR^2 -> RR$ and $f(x_1,x_2) = x_1^2 + x_2^2$.
 
 The convex combination simplifies to:
@@ -182,3 +185,100 @@ c) If we where to take the open closed half space $accent(H, -)^2_1$ of the imag
   image("geogebra-export.png", width: 50%),
   caption: [A curious figure.],
 )
+
+= Problem I.11
+a) Let $f in "Conv"_s (V,X)$ be the set of strongly convex functions over $X$ for a normed space $V$, $f: X -> RR$. We define the pointwise binary operations of $RR_(>0)$-module, with $f,g in "Conv"_s (V,X)$: $(f+g)(x) = f(x) + g(x)$ and $(lambda f)(x) = lambda f(x)$, with $lambda > 0$.
+
+We show that the composition of $f$ and $g$ is strong convex, with $r = a s (s-1) ||x+y||^2$, $a > 0$, $a in RR$, and $s in [0,1]$:
+
+$
+           (f+g)(x +_s y) & <= (f+g)(x) +_s (f+g)(y) - r \
+  f(x +_s y) + g(x +_s y) & <= (f(x) + g(x)) +_s (f(y) + g(y)) - r \
+  f(x +_s y) + g(x +_s y) & <= s f(x) + s g(x) + (1 - s)f(y) + (1-s) g(y) - r \
+  f(x +_s y) + g(x +_s y) & <= (f(x) +_s f(y)) + (g(x) +_s g(y) - r \
+$
+
+We know that $f(x +_s y) < (f(x) +_s f(y)) - r$ because $f$ is strong convex, same applies to g. Thus we substitude:
+
+$
+  (f(x) +_s f(y)) + (g(x) +_s g(y)) - 2r & <= (f(x) +_s f(y)) + (g(x) +_s g(y) - r \
+                                       2 & >= 1 \
+$
+
+Then we show that the action of $f$ is strong convex:
+
+$
+  (lambda f)(x +_s y) & <= (lambda f)(x) +_s (lambda f)(y)) - r \
+    lambda f(x +_s y) & <= lambda (f(x) +_s f(y)) - r \
+           f(x +_s y) & <= f(x) +_s f(y) - 1/lambda r \
+  (f(x) +_s f(y)) - r & <= f(x) +_s f(y) - 1/lambda r \
+                    1 & >= 1/lambda \
+$
+
+Proving that the $RR_(>0)$-module of the strong convex morphism in $"Conv"_s (V,X)$ satisfy strong convexity.
+
+Looking at the axioma of the $RR_(>0)$-module,
+
+- Addition:
+  - All function compositions are associative, therefore associativity also holds for the operation.
+  - The operation is symmetric: $(f+g)(x) = f(x) + g(x) = g(x) + f(x) = (g+f)(x)$
+- Action:
+  - Take $lambda = 1$ and we have the identity.
+  - It is distributive: $(lambda (f+g))(x) = lambda (f(x) + g(x)) = lambda f(x) + lambda g(x) = (lambda f)(x) + (lambda g) (x)$ and $((lambda_1 + lambda_2)f)(x) = (lambda_1 + lambda_2) f(x) = (lambda_1 f(x) + lambda_2 f(x)) = (lambda_1 f)(x) + (lambda_2 f)(x)$.
+  - Associativity holds: $lambda_1(lambda_2f)(x) = lambda_1 lambda_2 f(x) = (lambda_1 lambda_2) f(x)$
+
+Thus concluding that the set of strongly convex functions $"Conv"_s (V,X)$ are closed under the operations of an $RR_(>0)$-module.
+
+b) TODO
+
+= Problem I.12
+
+Let $M, N in "Ob"(R_(>0)-"Mod")$ and:
+$ "Mor"_(R_(>0)-"Mod")({f : M -> N cases(delim: "|", f(m + n) = f(m) + f(n), f(r m) = r f(m) " " r in RR_(>0)) }) $
+
+Define the identity map as, with $m in M$ as $id_M: M -> M$ and $id_M (m) = m$. The identity map satisfies the two given properties of the morphisms.
+
+Define the composition, with $f,g in R_(>0)-"Mod"$, $f: M->N$ and $g: N->O$ and $m in M$, as $g compose f : M -> O$ and $(g compose f)(m) = g(f(m))$.
+
+This satisfies the two properties:
+$
+  (g compose f)(m + n) & = g(f(m+n)) \
+                       & = g(f(m) + f(n)) \
+                       & = g(f(m)) + g(f(n)) \
+                       & = (g compose f)(m) + (g compose f)(n)
+$
+and
+$
+  (g compose f)(r m) & = g(f(r m)) \
+                     & = g(r f(m)) \
+                     & = r g(f(m)) \
+                     & = r (g compose f)(m)
+$
+
+These functions satisfy associativity because all functions satisfy associativity. The total thus proving that $(R_(>0)-"Mod")$ is a category.
+
+Now we show that $"Conv"_s: "CVec"^op_n -> (R_(>0)-"Mod")$ is a functor.
+
+$F in "CVec"_n^"op"$ consists of morphism $F: (W,Y) -> (V,X)$, which are linear and non-contractive.
+$G in RR_(>0)-"Mod"$ consists of morphism $G: M -> N$, which satisfy these properties: $f(m + n) = f(m) + f(n) and f(r m) = r f(m)$.
+$H in "Conv"_s$ is the set of strongly convex functions over $X$ for a normed space $V$, $H: X->RR$
+
+We define the functor on morphisms as:
+$
+  C : "CVec"^op_n (W,V) -> RR_(>0)-"Mod"(C (W), C (V)) \
+  C = H compose F
+$
+
+With $f,g in "CVec"^op_n$ and $f: (W,Y) -> (V,X)$ and $g: (U,Z) -> (W,Y)$:
+$
+  C (g compose f) =
+$
+
+TODO.
+
+
+= Problem I.13
+
+
+
+
