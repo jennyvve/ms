@@ -16,7 +16,7 @@
   university-logo: image("./logo.svg"),
 )
 
-Repository: #link("https://github.com/jennyvve/ms"), accessible using read-only token: "github_pat_11ATZJOHA0IdnnBz6t4FVo_c0qR3VNvxEUD5fWBKJ11 \ uksegrYTq7zMdVZImVIZKbdE5WW6U33ynf4L8nW"
+Repository: #link("git@github.com:jennyvve/ms.git"), accessible using read-only token: "github_pat_11ATZJOHA0IdnnBz6t4FVo_c0qR3VNvxEUD5fWBKJ11 \ uksegrYTq7zMdVZImVIZKbdE5WW6U33ynf4L8nW"
 
 #set enum(numbering: "1. ")
 
@@ -191,7 +191,7 @@ c) If we where to take the open closed half space $accent(H, -)^2_1$ of the imag
 = Problem I.11
 a) Let $f in "Conv"_s (V,X)$ be the set of strongly convex functions over $X$ for a normed space $V$, $f: X -> RR$. We define the pointwise binary operations of $RR_(>0)$-module, with $f,g in "Conv"_s (V,X)$: $(f+g)(x) = f(x) + g(x)$ and $(lambda f)(x) = lambda f(x)$, with $lambda > 0$.
 
-We show that the composition of $f$ and $g$ is strong convex, with $r = a s (s-1) ||x+y||^2$, $a > 0$, $a in RR$, and $s in [0,1]$:
+We show that the pointwise addition of $f$ and $g$ is strong convex, with $r = a s (1-s) ||x-y||^2$, $a > 0$, $a in RR$, and $s in [0,1]$:
 
 $
            (f+g)(x +_s y) & <= (f+g)(x) +_s (f+g)(y) - r \
@@ -200,7 +200,7 @@ $
   f(x +_s y) + g(x +_s y) & <= (f(x) +_s f(y)) + (g(x) +_s g(y) - r \
 $
 
-We know that $f(x +_s y) < (f(x) +_s f(y)) - r$ because $f$ is strong convex, same applies to g. Thus we substitude:
+We know that $f(x +_s y) <= (f(x) +_s f(y)) - r$ because $f$ is strong convex, same applies to g. Thus we substitude:
 
 $
   (f(x) +_s f(y)) + (g(x) +_s g(y)) - 2r & <= (f(x) +_s f(y)) + (g(x) +_s g(y) - r \
@@ -261,20 +261,29 @@ These functions satisfy associativity because all functions satisfy associativit
 
 Now we show that $"Conv"_s: "CVec"^op_n -> (R_(>0)-"Mod")$ is a functor.
 
-$F in "CVec"_n^"op"$ consists of morphism $F: (W,Y) -> (V,X)$, which are linear and non-contractive.
+
 $G in RR_(>0)-"Mod"$ consists of morphism $G: M -> N$, which satisfy these properties: $f(m + n) = f(m) + f(n) and f(r m) = r f(m)$.
-$H in "Conv"_s$ is the set of strongly convex functions over $X$ for a normed space $V$, $H: X->RR$
 
-We define the functor on morphisms as:
+
+
+The objects of the functor are defined as:
 $
-  C : "CVec"^op_n (W,V) -> RR_(>0)-"Mod"(C (W), C (V)) \
-  C = H compose F
+  "Conv"_s: "Ob"("CVec"^op_n (V,X)) -> "Ob"(RR_(>0)-"Mod"(C (V), C (X))) \
+  (V,X) mapsto "Conv"_s (V, X)
 $
 
-With $f,g in "CVec"^op_n$ and $f: (W,Y) -> (V,X)$ and $g: (U,Z) -> (W,Y)$:
+We show that $"Conv"_s (V, X) in "Ob"(RR_(>0)-"Mod")$, which holds because in Problem I.11 we have shown that $"Conv"_s$ forms a $R_(>0)-"module"$.
+
+$F,G in "CVec"^"op"_n$ consists of morphism $F: (W,Y) -> (V,X), G:(U,Z) -> (W,Y)$, which are linear and non-contractive. $H in "Conv"_s (W,Y)$ is the set of strongly convex functions over $Y$ for a normed space $W$, $H: Y -> RR$.
+
+We define the functor on morphisms, with some map $f: X -> Y, g: Z -> X$ which preserves the normed properties and convexity,
 $
-  C (g compose f) =
+  C(F) : "Conv"_s (W,Y) & -> "Conv"_s (V,X) \
+                C(F)(H) & = H compose f \
+      C(F compose G)(H) & = H compose f compose g
 $
+
+
 
 TODO.
 

@@ -1,5 +1,9 @@
 from typing import List
 
+from sympy import symbols, Function
+
+import sympy as sym
+
 """ This is just a start, nothing is finished here.
 
 """
@@ -12,7 +16,7 @@ class Domain:
         self.right = right
         self.right_closed = right_closed
 
-    def equals(self, domain: Domain) -> bool:
+    def equals(self, domain) -> bool:
         return (
             self.left == domain.left
             and self.left_closed == domain.left_closed
@@ -27,17 +31,17 @@ class Domain:
 
 class DomainClosed(Domain):
     def __init__(self, left, right):
-        super(left, True, right, True)
+        Domain.__init__(self, left, True, right, True)
 
 
 class DomainOpen(Domain):
     def __init__(self, left, right):
-        super(left, False, right, False)
+        Domain.__init__(self, left, False, right, False)
 
 
 class Variable:
     def __init__(self, name: str, domain: Domain):
-        self.name = name
+        self.symbol = sym.Symbol(name)
         self.domain = domain
 
 
@@ -49,7 +53,7 @@ class Function:
 
 class FunctionConvex(Function):
     def __init__(self, strong: bool, *args, **kwargs):
-        super(args, kwargs)
+        Function.__init__(self, args, kwargs)
         self.strong = strong
 
 
@@ -57,6 +61,9 @@ var_x = Variable("x", DomainClosed("R", "R"))
 
 pol_1 = FunctionConvex(
     strong=True,
-    expression="x**2",
+    expression=var_x.symbol**2,
     variables=[var_x],
 )
+
+e = 
+print()
