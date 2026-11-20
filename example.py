@@ -13,6 +13,26 @@ from analog_optimizer import R0Module
 from analog_optimizer import Circuit
 from analog_optimizer import ParseTree
 
+from matplotlib.collections import LineCollection
+from matplotlib import pyplot as plt
+
+from pybrid.lucipy import LUCIDAC
+
+from sympy import symbols
+
+import numpy as np
+
+def colored_line(x, y, c, ax=None, **lc_kwargs):
+    xy = np.stack((x, y), axis=-1)
+    xy_mid = np.concat(
+        (xy[0, :][None, :], (xy[:-1, :] + xy[1:, :]) / 2, xy[-1, :][None, :]), axis=0
+    )
+    segments = np.stack((xy_mid[:-1, :], xy, xy_mid[1:, :]), axis=-2)
+    lc_kwargs["array"] = c
+    lc = LineCollection(segments, **lc_kwargs)
+    ax = ax or plt.gca()
+    ax.add_collection(lc)
+    return lc
 
 class ExpressionPolynomialLinear(Expression):
     """f(x) = a + b * x"""
@@ -31,10 +51,6 @@ class ExpressionPolynomialLinear(Expression):
 
 Vec1 = List[Real]
 Vec2 = List[Real]
-
-
-from sympy import symbols
-from sympy import srepr
 
 
 class ExpressionQuadradicBivariate(ExpressionConvex):
@@ -108,20 +124,32 @@ class ExpressionExponential(ExpressionConvex):
         return [self.a * (self.a * x + self.b) * self.eval(x)]
 
 
-linear_expr_1 = ExpressionPolynomialLinear(5, 10)
-print(linear_expr_1([5]))
-quadradic_expr_1 = ExpressionQuadradicBivariate(1, 5, 5, 5, 5, 5, 5)
-quadradic_expr_2 = ExpressionQuadradicBivariate(1, 5.1, 5, 5, 5, 5, 5)
-
-quadradic_addition = R0Module.add(quadradic_expr_1, quadradic_expr_2)
-print(quadradic_addition([5, 5]))
-quadradic_scale = R0Module.scale(0.5, quadradic_expr_2)
-print(quadradic_scale([5, 5]))
-print(srepr(quadradic_expr_2.gradient()))
-
-
 g = ExpressionQuarticBivariate(1)
 
-c = Circuit(mac="bla")
+luci = LUCIDAC("tcp://192.168.1.5:5732")
+c = luci.create_circuit()
 p = ParseTree(c)
-c = p.make_circuit(g, [1, 2])
+c = p.make_circuit(g, [-0.6, -0.4])
+
+sample_rate = 100_000
+run_time = 0.0001
+luci.set_daq(num_channels=2, sample_rate=sample_rate)
+luci.set_run(op_time=int(run_time * 1_000_000_000))
+run = luci.run()
+
+fig, (ax1, ax2) = plt.subplots(1,2)
+color = np.linspace(0, 2, len(run.data[0]))
+lines = colored_line(run.data[0], run.data[1], color, ax1, linewidth=1, cmap='plasma')
+ax1.set_xlabel("x")
+ax1.set_ylabel("y")
+
+t = np.arange(len(run.data[0])) / sample_rate
+ax2.plot(t, run.data[0], label="x")
+ax2.plot(t, run.data[1], label="y")
+ax1.set_xlabel("t")
+ax2.set_ylabel("amplitude")
+ax2.legend()
+
+fig.suptitle("Plot of the gradient flow of g(x).")
+fig.tight_layout()
+plt.show()
