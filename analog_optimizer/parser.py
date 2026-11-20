@@ -10,6 +10,7 @@ from sympy import srepr
 from sympy import evaluate
 
 from pybrid.lucipy import Circuit
+from pybrid.lucipy.elements import _MulInput
 
 
 from . import ExpressionConvex
@@ -22,92 +23,52 @@ class ParseTree:
         self.constant_map = {}
         self.parse_map = {
             Mul: self.parse_tree_mul,
-            Pow: self.parse_tree_pow,
             Add: self.parse_tree_add,
             Symbol: self.parse_tree_symbol,
         }
+        self.connected_map = []
         self.circuit = circuit
         self.map_ints = {}
 
-    def parse_tree_pow(self, a, c, constant):
-        l = a.args[0]
-        r = a.args[1]
+    def connect(self, component1, component2, weight=1):
+        if isinstance(component2, _MulInput) and component2 in self.connected_map:
+            raise ValueError("Cannot reconnect multiplier.")
+        print(f"self.circuit.connect({component1},{component2},weight={weight})")
+        self.circuit.connect(component1, component2, weight=float(weight))
+        self.connected_map.append(component2)
 
-        if not isinstance(l, Symbol):
-            raise ValueError("Exponents are only supported on symbols.")
-        if not isinstance(r, Integer) and 0 < r and r <= 5:
-            raise ValueError("Non integer exponents are not supported.")
+    def parse_tree_mul(self, expr, component, constant=1):
+        args = expr.args
+        if isinstance(args[0], Number):
+            constant = args[0]
+            args = args[1:]
 
-        ic_r = ic_p = self.circuit.mul()
-        self.circuit.connect(self.map_ints[l], ic_p.a)
+        if len(args) == 1:
+            return self.parse(args[0], component, constant)
 
-        for _ in range(r - 2):
-            ic_n = self.circuit.mul()
-            self.circuit.connect(self.map_ints[l], ic_n.a)
-            self.circuit.connect(ic_n, ic_p.b)
-            ic_p = ic_n
+        mul_prev = self.circuit.mul()
+        self.connect(mul_prev, component, weight=constant)
+        for arg in args[:-1]:
+            if mul_prev.a in self.connected_map:
+                mul_new = self.circuit.mul()
+                self.connect(mul_new, mul_prev.b)
+                mul_prev = mul_new
+            self.parse(arg, mul_prev.a, 1)
+        self.parse(args[-1], mul_prev.b, 1)
 
-        self.circuit.connect(self.map_ints[l], ic_p.b)
-        self.circuit.connect(ic_r, c)
+    def parse_tree_add(self, expr, component, constant=1):
+        for arg in expr.args:
+            self.parse(arg, component, constant)
 
-    def parse_tree_mul(self, a, c, constant):
-        ic_r = None
-        constant = 1
-        if len(a.args) > 2:  # for example axy..
-            ic_r = ic_p = self.circuit.mul()
-            flag = False
-            for arg in a.args:
-                if isinstance(arg, Number):
-                    constant = arg
-                elif isinstance(arg, Symbol):
-                    if flag:
-                        ic_n = self.circuit.mul()
-                        self.circuit.connect(ic_n, ic_p.b)
-                        ic_p = ic_n
-                        flag = False
-                    else:
-                        flag = True
-                    self.circuit.connect(self.map_ints[arg], ic_p.a)
-                elif isinstance(arg, Pow):
-                    l = arg.args[0]
-                    r = arg.args[1]
+    def parse_tree_symbol(self, expr, component, constant=1):
+        self.connect(self.map_ints[expr], component, weight=constant)
 
-                    if not isinstance(l, Symbol):
-                        raise ValueError("Exponents are only supported on symbols.")
-                    if not isinstance(r, Integer) and 0 < r and r <= 5:
-                        raise ValueError("Non integer exponents are not supported.")
-
-                    for _ in range(r):
-                        if flag:
-                            ic_n = self.circuit.mul()
-                            self.circuit.connect(ic_n, ic_p.b)
-                            ic_p = ic_n
-                            flag = False
-                        else:
-                            flag = True
-                        self.circuit.connect(self.map_ints[l], ic_p.a)
-                else:
-                    raise ValueError("Invalid tree, unsupported.")
-            self.circuit.connect(ic_r, c, constant)
-        else:
-            if not isinstance(a.args[0], Number):
-                raise ValueError("Invalid tree, unsupported.")
-
-            self.parse(a.args[1], c, a.args[0])
-
-    def parse_tree_add(self, a, c, constant):
-        for arg in a.args:
-            self.parse(arg, c, constant)
-
-    def parse_tree_symbol(self, a, c, constant):
-        self.circuit.connect(self.map_ints[a], c, constant)
-
-    def parse(self, a, c, constant):
-        if type(a) not in self.parse_map:
+    def parse(self, expr, component, constant=1):
+        if type(expr) not in self.parse_map:
             raise ValueError(
-                f"Unable to parse this expression, not all operations are implemented: {type(a)}."
+                f"Unable to parse this expression, not all of its operations are implemented: {type(expr)}."
             )
-        self.parse_map[type(a)](a, c, constant)
+        self.parse_map[type(expr)](expr, component, constant)
 
     def make_circuit(self, f: ExpressionConvex, initial_condition: List[Real]):
         if not f.is_strong_convex():
@@ -124,7 +85,6 @@ class ParseTree:
                     lambda x: x.is_Pow and x.exp > 0,
                     lambda x: Mul(*[x.base] * x.exp),
                 )
-                print(expr)
                 self.parse(expr, self.map_ints[v], 1)
 
         return self.circuit
