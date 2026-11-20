@@ -76,7 +76,7 @@ class ParseTree:
 
         gradient = f.gradient()
         for i, (v, _) in enumerate(gradient.items()):
-            self.map_ints.update({v: self.circuit.int(ic=initial_condition[i])})
+            self.map_ints.update({v: self.circuit.int(ic=-initial_condition[i])})
             self.circuit.probe(self.map_ints[v], adc_channel=i)
 
 

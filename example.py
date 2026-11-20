@@ -129,7 +129,8 @@ g = ExpressionQuarticBivariate(1)
 luci = LUCIDAC("tcp://192.168.1.5:5732")
 c = luci.create_circuit()
 p = ParseTree(c)
-c = p.make_circuit(g, [-0.6, -0.4])
+initial_values = [0.6, 0.4]
+c = p.make_circuit(g, initial_values)
 
 sample_rate = 100_000
 run_time = 0.0001
@@ -150,6 +151,6 @@ ax1.set_xlabel("t")
 ax2.set_ylabel("amplitude")
 ax2.legend()
 
-fig.suptitle("Plot of the gradient flow of g(x).")
+fig.suptitle(f"Plot of the gradient flow of g(x). \n initial_values={initial_values}")
 fig.tight_layout()
 plt.show()
