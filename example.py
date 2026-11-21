@@ -22,6 +22,7 @@ from sympy import symbols
 
 import numpy as np
 
+
 def colored_line(x, y, c, ax=None, **lc_kwargs):
     xy = np.stack((x, y), axis=-1)
     xy_mid = np.concat(
@@ -33,6 +34,7 @@ def colored_line(x, y, c, ax=None, **lc_kwargs):
     ax = ax or plt.gca()
     ax.add_collection(lc)
     return lc
+
 
 class ExpressionPolynomialLinear(Expression):
     """f(x) = a + b * x"""
@@ -104,8 +106,8 @@ class ExpressionQuarticBivariate(ExpressionConvex):
     def _gradient(self) -> Vec2:
         x, y = symbols("x, y")
         return {
-            x: (4 * x**3 - 4 * y).simplify(),
-            y: (4 * y**3 - 4 * x).simplify(),
+            x: (4 * x**3 - 4 * y),
+            y: (4 * y**3 - 4 * x),
         }
 
 
@@ -138,9 +140,9 @@ luci.set_daq(num_channels=2, sample_rate=sample_rate)
 luci.set_run(op_time=int(run_time * 1_000_000_000))
 run = luci.run()
 
-fig, (ax1, ax2) = plt.subplots(1,2)
+fig, (ax1, ax2) = plt.subplots(1, 2)
 color = np.linspace(0, 2, len(run.data[0]))
-lines = colored_line(run.data[0], run.data[1], color, ax1, linewidth=1, cmap='plasma')
+lines = colored_line(run.data[0], run.data[1], color, ax1, linewidth=1, cmap="plasma")
 ax1.set_xlabel("x")
 ax1.set_ylabel("y")
 

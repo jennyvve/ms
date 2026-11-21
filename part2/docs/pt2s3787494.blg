@@ -1,0 +1,9 @@
+[0] Config.pm:308> INFO - This is Biber 2.20
+[0] Config.pm:311> INFO - Logfile is 'pt2s3787494.blg'
+[52] biber:340> INFO - === Sat Nov 21, 2026, 23:52:57
+[61] Biber.pm:420> INFO - Reading 'pt2s3787494.bcf'
+[107] Biber.pm:994> INFO - Found 0 citekeys in bib section 0
+[119] bbl.pm:676> INFO - Writing 'pt2s3787494.bbl' with encoding 'UTF-8'
+[119] bbl.pm:779> INFO - Output to pt2s3787494.bbl
+[119] Biber.pm:131> WARN - The file 'pt2s3787494.bcf' does not contain any citations!
+[119] Biber.pm:133> INFO - WARNINGS: 1

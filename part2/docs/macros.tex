@@ -1,0 +1,124 @@
+% Redefine Greek letters
+\let\oldphi\phi
+\def\phi{\varphi}
+\let\oldepsilon\epsilon
+\def\epsilon{\varepsilon}
+
+% Change spacing in overset
+% See https://tex.stackexchange.com/questions/194798/change-vertical-space-in-overset
+\makeatletter
+\newcommand{\oset}[3][0ex]{%
+  \mathrel{\mathop{#3}\limits^{
+    \vbox to#1{\kern-2\ex@
+    \hbox{$\scriptstyle#2$}\vss}}}}
+\makeatother
+
+
+\newcommand*{\Q}{\mathbb{Q}}
+\newcommand*{\QNN}{\Q_{\geq 0}}
+\newcommand*{\QP}{\Q_{> 0}}
+\newcommand*{\Z}{\mathbb{Z}}
+\newcommand*{\B}{\mathbb{B}}
+\newcommand*{\N}{\mathbb{N}}
+\newcommand*{\Reals}{\mathbb{R}}
+\newcommand*{\RNN}{\Reals_{\geq 0}}
+\newcommand*{\RP}{\Reals_{> 0}}
+
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiterX{\setDef}[2]{\{}{\}}{#1 \; \delimsize| \; #2}
+\newcommand*{\pow}{\mathcal{P}}
+\DeclarePairedDelimiter{\discr}{|}{|}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\DeclarePairedDelimiter{\braks}{[}{]}
+\newcommand*{\bparen}[1]{\paren[\big]{#1}}
+\DeclarePairedDelimiter{\fOrd}{[}{\rangle}
+
+% Typeset quotients.
+% Based on https://tex.stackexchange.com/questions/4624/a-symbol-for-the-quotient-of-two-objects
+% and https://tex.stackexchange.com/questions/684777/include-empty-delimiter-in-declarepaireddelimiter
+\NewDocumentCommand{\quot}{sO{}mm}{%
+  \IfBooleanTF{#1}{% star
+    \mleft.\kern-\nulldelimiterspace%
+    \raisebox{.1em}{$#3$}\middle/\raisebox{-.2em}{$#4$}%
+    \mright.%
+  }{% no star
+    \raisebox{.1em}{$#3$}#2/\raisebox{-.2em}{$#4$}%
+  }%
+}
+
+\newcommand*{\from}{\colon}
+\newcommand*{\natTo}{\Rightarrow}
+\newcommand*{\Hom}[1]{#1}
+\newcommand*{\id}{\mathrm{id}}
+\newcommand*{\comp}{\circ}
+\newcommand*{\op}[1]{#1^{\mathrm{op}}}
+\DeclareMathOperator{\dom}{dom}
+\newcommand{\proMor}[2]{%
+  \begin{tikzcd}[cramped, sep=small, ampersand replacement=\&]%
+    #1 \arrow[r, "\shortmid"{marking, pos=0.4}] \& #2%
+  \end{tikzcd}%
+}
+\newcommand*{\preIm}[1]{#1^{\leftarrow}}
+\newcommand*{\forIm}[1]{#1^{\rightarrow}}
+\newcommand*{\preComp}[1]{#1^{\ast}}
+\newcommand*{\postComp}[1]{#1_{\ast}}
+
+\DeclarePairedDelimiter{\pair}{\langle}{\rangle}
+
+%% Binding constructs
+\newcommand*{\bind}[2]{#1 #2. \,}
+\newcommand*{\all}[1]{\bind{\forall}{#1}}
+\newcommand*{\exist}[1]{\bind{\exists}{#1}}
+\newcommand*{\unique}[1]{\bind{\exists!}{#1}}
+
+%%% Categories
+\newcommand*{\ext}[1]{\overline{#1}}
+\newcommand*{\Maps}[1]{\mathcal{#1}}
+\newcommand*{\Cat}[1]{\mathcal{#1}}
+\newcommand*{\CC}{\Cat{C}}
+\newcommand*{\CD}{\Cat{D}}
+\newcommand*{\CE}{\Cat{E}}
+\DeclareMathOperator{\ob}{ob}
+
+\DeclareMathOperator{\FunGr}{Gr}
+\DeclarePairedDelimiterX{\iHom}[2]{[}{]}{#1, #2}
+\newcommand*{\timesU}{\ast}
+\DeclarePairedDelimiterX{\FunC}[2]{[}{]}{#1, #2}
+
+%% Definite Categories
+\newcommand*{\StdCat}[1]{\mathbf{#1}}
+\newcommand*{\SetC}{\StdCat{Set}}
+\newcommand*{\BSetC}{\StdCat{Set}_{\bullet}}
+\newcommand*{\UBSet}{U_{\bullet}}
+\newcommand*{\RelC}{\StdCat{Rel}}
+\newcommand*{\Vect}{\StdCat{Vect}}
+\newcommand*{\MonC}{\StdCat{Mon}}
+\newcommand*{\Dom}{\StdCat{Dom}}
+\newcommand*{\DDom}{\StdCat{DDiff}}
+\newcommand*{\RPMod}{\RP\text{-}\StdCat{Mod}}
+
+% Adjunctions
+\newcommand*{\lTransp}[1]{#1^{\sharp}}
+\newcommand*{\rTransp}[1]{#1^{\flat}}
+\newcommand*{\adjointUnit}[1]{\oset[-0.3ex]{#1}{\longdashv}}
+\newcommand*{\adjoint}{\dashv}
+\DeclareFontFamily{U}{min}{}
+\DeclareFontShape{U}{min}{m}{n}{<-> dmjhira}{}
+\newcommand{\yo}{\!\text{\usefont{U}{min}{m}{n}\symbol{'107}}\:\!\!}
+\newcommand{\Yo}{\!\text{\usefont{U}{min}{m}{n}\symbol{'110}}}
+\newcommand{\Suba}[1]{\text{Sub}_a(#1)}
+\newcommand{\Subo}[1]{\text{Sub}_0(#1)}
+
+%% Order theory
+\newcommand*{\join}{\bigvee\nolimits}
+\newcommand*{\meet}{\bigwedge\nolimits}
+
+% Geometry
+% Half space with optional index for the coordinate to be tested. Default is the highest
+\DeclareDocumentCommand{\Half}{o m}{%
+  \mathrm{H}^{#2}\IfValueT{#1}{_{#1}}%
+}
+
+%% Convex Sets
+\newcommand*{\CVec}{\StdCat{CVec}}
+\newcommand*{\Conv}{\mathrm{Conv}}
